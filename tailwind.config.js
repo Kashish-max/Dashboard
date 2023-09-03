@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 
+const defaultTheme = require('tailwindcss/defaultTheme');
 const withMT = require("@material-tailwind/react/utils/withMT");
 
 module.exports = withMT({
@@ -12,13 +13,9 @@ module.exports = withMT({
     "./node-modules/@material-tailwind/react/theme/components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
-      },
-    },
+    fontFamily: {
+      sans: ['"Plus Jakarta Sans"', '"Poppins"']
+    }    
   },
   plugins: [],
 })

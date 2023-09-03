@@ -7,6 +7,9 @@ export default function Document() {
       <body>
         <Main />
         <NextScript />
+
+        {/* Lottie animation cdn */}
+        <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
       </body>
     </Html>
   )

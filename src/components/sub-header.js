@@ -22,7 +22,8 @@ const SubHeader = ({user, setSwitchOn}) => {
                 circleProps={{
                     className: "before:hidden left-0.5 border-none",
                 }}
-                onChange={handleSwitchChange} 
+                onChange={handleSwitchChange}
+                defaultChecked={true}
             />    
         </div>
     );

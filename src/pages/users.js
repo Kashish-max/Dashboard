@@ -6,7 +6,7 @@ import Card from "@/components/card";
 
 const Body = () => {
     const { session, status } = useAuth();
-    const [switchOn, setSwitchOn] = useState(false);
+    const [switchOn, setSwitchOn] = useState(true);
     const [data, setData] = useState([])
 
     useEffect(() => {
@@ -45,7 +45,12 @@ const Body = () => {
             <div className="mb-9">
                 <SubHeader user={session?.user} setSwitchOn={setSwitchOn} />
             </div>
-            <Card switchOn={switchOn} tableHead={tableHead} data={data} />
+            <Card 
+                switchOn={switchOn} 
+                tableHead={tableHead} 
+                data={data} 
+                setData={setData} 
+            />
         </div>
     );
 }

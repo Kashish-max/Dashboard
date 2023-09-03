@@ -1,11 +1,44 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Inter } from 'next/font/google'
 import { Badge } from "@material-tailwind/react";
+import { ArrowUpIcon } from "@heroicons/react/24/outline";
 import Search from "./search"
 
 const inter = Inter({ subsets: ['latin'] })
 
-const Card = ({ switchOn, tableHead, data }) => {
+const Card = ({ switchOn, tableHead, data, setData }) => {
+    const [loading, setLoading] = useState(false);
+
+    const [prevKey, setPrevKey] = useState(null);
+    const [prevOrder, setPrevOrder] = useState(1);
+
+    const [activeCol, setActiveCol] = useState(null);
+
+    const handleSort = (key) => {
+        setLoading(true);
+        setActiveCol(key);
+
+        let order = prevOrder;
+        if(prevKey == key) {
+            setPrevOrder(prevOrder * -1);
+            order = order * -1;
+        }
+        setTimeout(() => {
+            let sortedData = data;
+            sortedData.sort((a, b) => {
+                let fa = a[key].toLowerCase(),
+                    fb = b[key].toLowerCase();
+            
+                if (fa < fb) return -1 * order;
+                if (fa > fb) return 1 * order;
+                return 0;
+            });
+            
+            setData(sortedData);  
+            setPrevKey(key);
+            setLoading(false);
+        }, 10);
+    }
 
     return (
         <div className="rounded-[10px] bg-white border-[1.5px] border-gray-200 shadow-sm px-4 py-7 max-h-[calc(100vh-13rem)] overflow-auto">
@@ -38,8 +71,15 @@ const Card = ({ switchOn, tableHead, data }) => {
                             </th>
                             {tableHead.map((col) => {
                                 return (
-                                    <th key={col.key} className="border-b font-medium px-4 py-3 text-slate-400 text-left bg-gray-50 text-xs">
-                                        {col.title}
+                                    <th 
+                                        key={col.key} 
+                                        className={`border-b font-medium px-4 py-3 text-slate-400 text-left text-xs cursor-pointer hover:bg-gray-200 ${activeCol == col.key.toLowerCase() ? 'bg-gray-200 border-b-2 border-gray-300': 'bg-gray-50'}`}
+                                        onClick={() => handleSort(col.key)}
+                                    >
+                                        <div className="flex w-full justify-between items-center">
+                                            <span>{col.title}</span>
+                                            <span>{activeCol == col.key.toLowerCase() && <ArrowUpIcon strokeWidth={2} className={`h-3 w-3 text-[#3F3F46] ${prevOrder == 1 ? 'transform rotate-180': ''}`} />}</span>
+                                        </div>
                                     </th>
                                 )
                             })}
@@ -48,9 +88,9 @@ const Card = ({ switchOn, tableHead, data }) => {
                     
                     {switchOn &&
                         <tbody className="bg-white">
-                            {data && data.map((item) => {
+                            {data && data.map((item, i) => {
                                 return (
-                                    <tr className="align-baseline hover:bg-gray-50">
+                                    <tr key={i} className="align-baseline hover:bg-gray-50">
                                         <th className="border-b font-medium px-4 py-3 text-slate-400">
                                             <input type="checkbox" className="align-middle" />
                                         </th>                                    

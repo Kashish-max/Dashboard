@@ -17,7 +17,6 @@ export default function BaseSpeedDial() {
             <SpeedDial>
                 <SpeedDialHandler>
                     <IconButton color="white" size="lg" className="rounded-full border border-blue-gray-100">
-                        {/* <QuestionMarkCircleIcon className="h-5 w-5 transition-transform group-hover:rotate-45" /> */}
                         <img src="/assets/question.svg" alt="Help" className="h-5 w-5 transition-transform group-hover:rotate-45" />
                     </IconButton>
                 </SpeedDialHandler>

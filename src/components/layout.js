@@ -30,7 +30,7 @@ const Layout = ({ children }) => {
                 <Navbar />            
                 <div className="flex">
                     <Sidebar />
-                    <div className="flex-grow h-[calc(100vh-4rem)] mt-16 overflow-auto">
+                    <div className="flex-grow h-[calc(100vh-4rem)] mt-16 overflow-auto px-11 py-9">
                         {children}
                     </div>
                 </div>

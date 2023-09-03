@@ -16,22 +16,27 @@ const Sidebar = () => {
 
   const listItems = [
     {
+        slug: "posts",
         icon: "/assets/sidebar/chart-bar.svg",
         text: "Posts",
     },
     {
+        slug: "comments",
         icon: "/assets/sidebar/user.svg",
         text: "Comments",
     },
     {
+        slug: "albums",
         icon: "/assets/sidebar/users.svg",
         text: "Albums",
     },
     {
+        slug: "photos",
         icon: "/assets/sidebar/chart-square-bar.svg",
-        text: "Photo",
+        text: "Photos",
     },
     {
+        slug: "users",
         icon: "/assets/sidebar/chart-square-bar.svg",
         text: "Users",
     },
@@ -44,7 +49,7 @@ const Sidebar = () => {
                 <img src="/assets/logo.svg" alt="Logo" className="w-16" />
             </div>
             <List>
-                <ListItem>
+                <ListItem onClick={() => router.push("dashboard")}>
                     <ListItemPrefix>
                         <img src="/assets/sidebar/dashboard.svg" alt="Dashboard" className="h-4 w-4" />
                     </ListItemPrefix>
@@ -57,7 +62,7 @@ const Sidebar = () => {
 
                 {listItems.map((item, index) => {
                     return (
-                        <ListItem key={index}>
+                        <ListItem key={index} onClick={() => router.push(item.slug)}>
                             <ListItemPrefix>
                                 <img src={item.icon} alt={item.text} className="h-4 w-4" />
                             </ListItemPrefix>

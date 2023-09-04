@@ -16,6 +16,9 @@
             NEXT_PUBLIC_PIESOCKET_API_KEY=
             NEXT_PUBLIC_PIESOCKET_CLUSTER_ID=
       ```
+ - Add Redirect URIs to your google and github OAuth App
+  - `http://localhost:3000/api/auth/callback/google`
+  - `http://localhost:3000/api/auth/callback/github`
 
 ## Usage
 
@@ -23,3 +26,6 @@ To run the project, please use the following commands:
  - `npm install`
  - `npm run dev`
     - Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+## Deployment Link
+ - [https://saasden-red.vercel.app/](https://saasden-red.vercel.app/)

@@ -1,12 +1,12 @@
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { Button, Badge } from "@material-tailwind/react";
-import { useAuth } from "./layout";
 import Search from "./search";
-import AvatarMenu from "./avatar";
+import AvatarMenu from "./menus/avatar-menu";
 
 const Navbar = () => {
   const router = useRouter();
-  const { session } = useAuth();
+  const { data: session, status } = useSession();
 
   return (
     <header className="fixed w-full top-0 z-50 flex items-center px-12 py-1 border-b-[1.5px] border-gray-200 bg-white">

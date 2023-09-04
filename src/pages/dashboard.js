@@ -1,9 +1,9 @@
 import Layout from "@/components/layout";
-import { useAuth } from "@/components/layout";
+import { useSession } from "next-auth/react";
 
 const Body = () => {
-    const { session, status } = useAuth();
-
+    const { data: session, status } = useSession();
+    
     return (
         <div className="flex flex-col items-center justify-center h-screen">
             <h1 className="text-4xl font-bold">{session?.user.name}</h1>

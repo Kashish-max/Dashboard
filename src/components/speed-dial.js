@@ -21,7 +21,7 @@ export default function BaseSpeedDial() {
                     </IconButton>
                 </SpeedDialHandler>
                 <SpeedDialContent>
-                    <Tooltip content="Read Docs" placement="left" className="text-xs font-medium bg-blue-500">
+                    <Tooltip content="Read Docs" placement="left" className="text-xs font-medium bg-gray-500 rounded-sm">
                         <button>
                             <SpeedDialAction>
                                 <ArrowTopRightOnSquareIcon className="h-5 w-5" />

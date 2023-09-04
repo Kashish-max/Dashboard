@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import Layout from "@/components/layout";
-import { useAuth } from "@/components/layout";
+import { useSession } from "next-auth/react";
 import SubHeader from "@/components/sub-header";
 import Card from "@/components/card";
 
 const Body = () => {
-    const { session, status } = useAuth();
+    const { data: session, status } = useSession();
+
     const [switchOn, setSwitchOn] = useState(true);
     const [data, setData] = useState([])
 
@@ -31,13 +32,13 @@ const Body = () => {
     }
 
     const tableHead = [
-        { title: "Name", key: "name" }, 
-        { title: "Username", key: "username" }, 
-        { title: "Email ID", key: "email" }, 
-        { title: "Phone", key: "phone" }, 
-        { title: "Address", key: "address" }, 
-        { title: "Website", key: "website" }, 
-        { title: "Company", key: "company" },
+        { label: "Name", key: "name" }, 
+        { label: "Username", key: "username" }, 
+        { label: "Email ID", key: "email" }, 
+        { label: "Phone", key: "phone" }, 
+        { label: "Address", key: "address" }, 
+        { label: "Website", key: "website" }, 
+        { label: "Company", key: "company" },
     ]
 
     return (

@@ -21,10 +21,10 @@ export const AvatarMenu = ({ user }) => {
             <MenuHandler>
                 <Button variant="text" color="white" className="p-0 ms-2">
                     <img
-                    loading="lazy" 
-                    className="w-11 h-11 rounded-full p-1 cursor-pointer" 
-                    src={ user?.image } 
-                    alt="Profile" 
+                        loading="lazy" 
+                        className="w-11 h-11 rounded-full p-1 cursor-pointer" 
+                        src={ user?.image } 
+                        alt="Profile" 
                     /> 
                 </Button>
             </MenuHandler>

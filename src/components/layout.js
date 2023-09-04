@@ -1,5 +1,5 @@
 import React from 'react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useSession } from "next-auth/react";
 import Loading from '@/components/loading';
@@ -9,14 +9,16 @@ import Sidebar from "./sidebar";
 import BaseSpeedDial from './speed-dial';
 
 import { createContext, useContext } from 'react';
-const UserContext = createContext();
-export const useAuth = () => {
-  return useContext(UserContext);
+const SearchContext = createContext();
+export const useSearch = () => {
+  return useContext(SearchContext);
 };
 
 const Layout = ({ children }) => {
-    const { data: session, status } = useSession();
     const router = useRouter();
+    const [search, setSearch] = useState('');
+
+    const { data: session, status } = useSession();
     
     useEffect(() => {
         if(status === 'unauthenticated') router.push('/');
@@ -25,7 +27,7 @@ const Layout = ({ children }) => {
     if(status === 'loading') return <Loading />;
 
     return (
-        <UserContext.Provider value={{ session, status }}>
+        <SearchContext.Provider value={{ search, setSearch }}>
             <div className="min-h-screen min-w-screen bg-[#fafafb]">
                 <Navbar />            
                 <div className="flex">
@@ -36,7 +38,7 @@ const Layout = ({ children }) => {
                 </div>
                 <BaseSpeedDial />
             </div>
-        </UserContext.Provider>
+        </SearchContext.Provider>
     );
 }
 

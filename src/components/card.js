@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Inter } from 'next/font/google';
 import { Badge, Tooltip } from "@material-tailwind/react";
 import { ArrowUpIcon } from "@heroicons/react/24/outline";
+import { useSearch } from "./layout";
 import FilterMenu from "./menus/filter-menu";
 import ExportMenu from "./menus/export-menu";
 import Search from "./search";
@@ -13,9 +14,9 @@ const Card = ({ switchOn, tableHead, data, setData }) => {
     const router = useRouter();
     const slug = router.route.slice(1);
 
-    const [loading, setLoading] = useState(false);
-    const [search, setSearch] = useState('');
+    const { search, setSearch } = useSearch();
 
+    const [loading, setLoading] = useState(false);    
     const [prevKey, setPrevKey] = useState(null);
     const [prevOrder, setPrevOrder] = useState(1);
 
@@ -68,7 +69,7 @@ const Card = ({ switchOn, tableHead, data, setData }) => {
             <h1 className="text-base text-[#18181B] font-black">Sample data</h1>
             <div className="flex space-x-2 mt-6">
                 <div className="flex-grow">
-                    <Search setSearch={setSearch} delay={500} />
+                <Search setSearch={setSearch} delay={500} />
                 </div>
                 <Badge content="1" className={`p-0 min-h-[17px] min-w-[17px] text-[11px] ${inter.className}`}>
                     <FilterMenu>

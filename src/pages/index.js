@@ -9,13 +9,13 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-      if(status === 'authenticated') router.push('/dashboard');
+      if(status === 'authenticated') router.push('/users');
   }, [session]);
 
-  if(status === 'loading') return <Loading />;
+  if(status === 'loading') return <Loading className="w-screen h-screen -translate-y-12" />;
   
   const handleSignIn = (provider) => {
-    signIn(provider, { callbackUrl: `${process.env.NEXT_PUBLIC_DOMAIN}/dashboard` });
+    signIn(provider, { callbackUrl: `${process.env.NEXT_PUBLIC_DOMAIN}/users` });
   }
 
   return (

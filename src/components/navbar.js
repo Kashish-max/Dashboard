@@ -12,16 +12,7 @@ const Navbar = () => {
   const { search, setSearch } = useSearch();
 
   return (
-    <header className="fixed w-full top-0 z-50 flex items-center px-12 py-1 border-b-[1.5px] border-gray-200 bg-white">
-
-      {/* Hamburger */}
-      <Button variant="text" color="white" className="p-0 sm:hidden">
-        <div className="space-y-1 px-2 py-2 block">
-          <span className="block w-5 h-0.5 bg-gray-600 rounded-lg"></span>
-          <span className="block w-5 h-0.5 bg-gray-600 rounded-lg"></span>
-          <span className="block w-3 h-0.5 bg-gray-600 rounded-lg"></span>
-        </div>
-      </Button>
+    <header className="fixed w-full top-0 z-50 flex items-center px-3 sm:px-12 py-1 border-b-[1.5px] border-gray-200 bg-white">
 
       {/* Logo */}
       <button className="flex items-center py-1" onClick={() => router.push("/")}>

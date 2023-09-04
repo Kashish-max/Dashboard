@@ -24,7 +24,7 @@ const Layout = ({ children }) => {
         if(status === 'unauthenticated') router.push('/');
     }, [session, status]);
 
-    if(status === 'loading') return <Loading />;
+    if(status === 'loading') return <Loading className="w-screen h-screen -translate-y-12" />;
 
     return (
         <SearchContext.Provider value={{ search, setSearch }}>
@@ -32,7 +32,7 @@ const Layout = ({ children }) => {
                 <Navbar />            
                 <div className="flex">
                     <Sidebar />
-                    <div className="flex-grow h-[calc(100vh-4rem)] mt-16 overflow-auto px-11 py-9">
+                    <div className="flex-grow h-[calc(100vh-4rem)] mt-16 overflow-x-auto overflow-y-hidden sm:overflow-y-auto px-0 sm:px-2 md:px-11 py-7 sm:py-9">
                         {children}
                     </div>
                 </div>

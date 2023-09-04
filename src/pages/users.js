@@ -13,10 +13,9 @@ const Body = () => {
     useEffect(() => {
         fetch('https://jsonplaceholder.typicode.com/users')
             .then(response => response.json())
-            .then(json => {
-                const updatedData = json.map(updateData);
-                console.log(updatedData)
-                setData(updatedData)
+            .then(users => {
+                const updatedData = users.map(updateData);
+                setData(updatedData);
             })
     }, [])
 
@@ -42,15 +41,15 @@ const Body = () => {
     ]
 
     return (
-        <div className="">
-            <div className="mb-9">
+        <div>
+            <div className="mb-6 sm:mb-9">
                 <SubHeader user={session?.user} setSwitchOn={setSwitchOn} />
             </div>
             <Card 
                 switchOn={switchOn} 
-                tableHead={tableHead} 
                 data={data} 
                 setData={setData} 
+                tableHead={tableHead} 
             />
         </div>
     );

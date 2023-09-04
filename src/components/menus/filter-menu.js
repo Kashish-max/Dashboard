@@ -18,7 +18,12 @@ export const FilterMenu = ({ children }) => {
                 <MenuItem className="flex items-center gap-2">
                     <NoSymbolIcon strokeWidth={2} className="h-4 w-4 text-[#3F3F46]" />
                     <Typography variant="small" className="font-normal text-[#3F3F46]">
-                        No Filters Available
+                        No Filters Available                        
+                    </Typography>
+                </MenuItem>
+                <MenuItem className="flex items-center gap-2">
+                    <Typography variant="small" className="font-normal text-xs text-gray-500">
+                        Please click on any column title <br /> to perform sorting
                     </Typography>
                 </MenuItem>
             </MenuList>

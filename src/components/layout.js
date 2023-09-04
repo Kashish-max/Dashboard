@@ -1,5 +1,5 @@
 import React from 'react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useSession } from "next-auth/react";
 import Loading from '@/components/loading';
@@ -19,12 +19,9 @@ const Layout = ({ children }) => {
     const [search, setSearch] = useState('');
 
     const { data: session, status } = useSession();
-    
-    useEffect(() => {
-        if(status === 'unauthenticated') router.push('/');
-    }, [session, status]);
 
     if(status === 'loading') return <Loading className="w-screen h-screen -translate-y-12" />;
+    if(status === 'unauthenticated') router.push('/');
 
     return (
         <SearchContext.Provider value={{ search, setSearch }}>

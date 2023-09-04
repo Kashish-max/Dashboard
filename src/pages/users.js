@@ -1,12 +1,9 @@
 import { useState, useEffect } from "react";
 import Layout from "@/components/layout";
-import { useSession } from "next-auth/react";
 import SubHeader from "@/components/sub-header";
 import Card from "@/components/card";
 
 const Body = () => {
-    const { data: session, status } = useSession();
-
     const [switchOn, setSwitchOn] = useState(true);
     const [data, setData] = useState([])
 
@@ -43,7 +40,7 @@ const Body = () => {
     return (
         <div>
             <div className="mb-6 sm:mb-9">
-                <SubHeader user={session?.user} setSwitchOn={setSwitchOn} />
+                <SubHeader setSwitchOn={setSwitchOn} />
             </div>
             <Card 
                 switchOn={switchOn} 

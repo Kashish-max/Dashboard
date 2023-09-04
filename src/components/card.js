@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Inter } from 'next/font/google';
 import { Badge, Tooltip } from "@material-tailwind/react";
 import { ArrowUpIcon } from "@heroicons/react/24/outline";
@@ -13,6 +13,7 @@ const inter = Inter({ subsets: ['latin'] })
 const Card = ({ switchOn, data, setData, tableHead, sustainMinColWidth }) => {
     const router = useRouter();
     const slug = router.route.slice(1);
+    const [channel, setChannel] = useState(null);
 
     const { search, setSearch } = useSearch();
 
@@ -22,7 +23,44 @@ const Card = ({ switchOn, data, setData, tableHead, sustainMinColWidth }) => {
 
     const [activeCol, setActiveCol] = useState(null);
 
-    const handleSort = (key) => {
+    const userId = "user_"+(Math.floor(Math.random() * 1000));
+
+    useEffect(() => {  
+        const PieSocket = require("piesocket-js");
+        let connection = new PieSocket({
+            clusterId: process.env.NEXT_PUBLIC_PIESOCKET_CLUSTER_ID,
+            apiKey: process.env.NEXT_PUBLIC_PIESOCKET_API_KEY,
+            notifySelf: true,
+            presence: true,
+            userId: userId,
+        });
+        
+        connection.subscribe("chat-room").then( ch => {
+            setChannel(ch);            
+            ch.listen("system:member_joined", function(data){
+                console.log(`You ${data.member.user} joined the chat room`);
+            })
+
+            ch.listen("new_message", function(data, meta){
+                if(data.sender != userId) {
+                    if(data.type == "sort")
+                        performSort(data.message)
+                }
+            })
+
+            // ch.publish("new_message", {
+            //     type: "sort",
+            //     sender: userId,
+            //     message: key,
+            // });           
+        });
+    }, []);
+
+    const handleSort = (key) => { 
+        performSort(key);
+    }
+
+    const performSort = (key) => {
         setLoading(true);
         setActiveCol(key);
 
@@ -110,9 +148,8 @@ const Card = ({ switchOn, data, setData, tableHead, sustainMinColWidth }) => {
                             </th>
                             {tableHead.map((col) => {
                                 return (
-                                    <Tooltip content={`Sort by ${col.label}`} placement="top" className="text-[10px] font-medium bg-gray-500 rounded-sm [word-spacing:2px] px-1.5 py-1">
-                                        <th 
-                                            key={col.key} 
+                                    <Tooltip key={col.key} content={`Sort by ${col.label}`} placement="top" className="text-[10px] font-medium bg-gray-500 rounded-sm [word-spacing:2px] px-1.5 py-1">
+                                        <th  
                                             className={`border-b font-medium px-4 py-3 text-slate-400 text-left text-xs cursor-pointer hover:bg-gray-200 ${activeCol == col.key.toLowerCase() ? 'bg-gray-200 border-b-2 border-gray-300': 'bg-gray-50'} ${sustainMinColWidth && "min-w-[12rem]"}`}
                                             onClick={() => handleSort(col.key)}
                                         >

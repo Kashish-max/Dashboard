@@ -2,7 +2,8 @@ import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { Inter } from 'next/font/google';
 import { Badge, Tooltip } from "@material-tailwind/react";
-import { ArrowUpIcon } from "@heroicons/react/24/outline";
+import { ArrowUpIcon, ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/outline";
+import ReactPaginate from 'react-paginate';
 import { useSearch } from "./layout";
 import FilterMenu from "./menus/filter-menu";
 import ExportMenu from "./menus/export-menu";
@@ -10,19 +11,34 @@ import Search from "./search";
 
 const inter = Inter({ subsets: ['latin'] })
 
-const Card = ({ switchOn, data, setData, tableHead, sustainMinColWidth }) => {
+const Card = ({ 
+    switchOn, 
+    data, 
+    setData, 
+    tableHead, 
+    sustainMinColWidth,
+    dataPerPage = 10,
+}) => {
     const router = useRouter();
     const slug = router.route.slice(1);
-    const [channel, setChannel] = useState(null);
 
+    // Search
     const { search, setSearch } = useSearch();
 
+    // Column Sort
     const [loading, setLoading] = useState(false);    
     const [prevKey, setPrevKey] = useState(null);
     const [prevOrder, setPrevOrder] = useState(1);
-
     const [activeCol, setActiveCol] = useState(null);
 
+    // Pagination
+    const [dataItemOffset, setDataItemOffset] = useState(0);
+    const endOffset = dataItemOffset + dataPerPage;
+    const currentData = data.slice(dataItemOffset, endOffset);
+    const pageCount = Math.ceil(data.length / dataPerPage);
+
+    // Piesocket
+    const [channel, setChannel] = useState(null);
     const userId = "user_"+(Math.floor(Math.random() * 1000));
 
     useEffect(() => {  
@@ -37,14 +53,14 @@ const Card = ({ switchOn, data, setData, tableHead, sustainMinColWidth }) => {
         
         connection.subscribe("chat-room").then( ch => {
             setChannel(ch);            
-            ch.listen("system:member_joined", function(data){
-                console.log(`You ${data.member.user} joined the chat room`);
+            ch.listen("system:member_joined", function(socket_data){
+                console.log(`You ${socket_data.member.user} joined the chat room`);
             })
 
-            ch.listen("new_message", function(data, meta){
-                if(data.sender != userId) {
-                    if(data.type == "sort")
-                        performSort(data.message)
+            ch.listen("new_message", function(socket_data, meta){
+                if(socket_data.sender != userId) {
+                    if(socket_data.type == "sort")
+                        performSort(socket_data.message)
                 }
             })
 
@@ -56,6 +72,7 @@ const Card = ({ switchOn, data, setData, tableHead, sustainMinColWidth }) => {
         });
     }, []);
 
+    // Column Sort
     const handleSort = (key) => { 
         performSort(key);
     }
@@ -104,6 +121,12 @@ const Card = ({ switchOn, data, setData, tableHead, sustainMinColWidth }) => {
         return false;
     }      
 
+    // Pagination
+    const handlePageTransition = (event) => {
+        const newOffset = (event.selected * dataPerPage) % data.length;
+        setDataItemOffset(newOffset);
+    };
+
     // Detect if the string is a url
     const isUrl = (string) => {
         try { new URL(string)} 
@@ -117,7 +140,7 @@ const Card = ({ switchOn, data, setData, tableHead, sustainMinColWidth }) => {
             <div className="flex space-x-2 mt-6">
                 <div className="flex-grow">
                     <Search setSearch={setSearch} delay={500} />
-                </div>
+                </div>              
                 <Badge content="1" className={`p-0 min-h-[17px] min-w-[17px] text-[11px] ${inter.className}`}>
                     <FilterMenu>
                         <button 
@@ -137,6 +160,37 @@ const Card = ({ switchOn, data, setData, tableHead, sustainMinColWidth }) => {
                     </button>
                 </ExportMenu>
             </div>
+            {switchOn && 
+                <div className="min-w-fit">
+                    <ReactPaginate
+                        breakLabel="..."
+                        previousLabel={
+                            <div className="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" aria-hidden="true" className="fill-[#3F3F46] w-5 me-2">
+                                    <path fill-rule="evenodd" d="M18 10a.75.75 0 01-.75.75H4.66l2.1 1.95a.75.75 0 11-1.02 1.1l-3.5-3.25a.75.75 0 010-1.1l3.5-3.25a.75.75 0 111.02 1.1l-2.1 1.95h12.59A.75.75 0 0118 10z" clip-rule="evenodd"></path>
+                                </svg> 
+                                <span className="hidden lg:inline">Previous</span>
+                            </div>
+                        }
+                        nextLabel={
+                            <div className="flex items-center">
+                                <span className="hidden lg:inline">Next</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" className="fill-[#3F3F46] w-5 ms-2">
+                                    <path fill-rule="evenodd" d="M2 10a.75.75 0 01.75-.75h12.59l-2.1-1.95a.75.75 0 111.02-1.1l3.5 3.25a.75.75 0 010 1.1l-3.5 3.25a.75.75 0 11-1.02-1.1l2.1-1.95H2.75A.75.75 0 012 10z" clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                        }
+                        onPageChange={handlePageTransition}
+                        pageRangeDisplayed={2}
+                        marginPagesDisplayed={2}
+                        pageCount={pageCount}
+                        renderOnZeroPageCount={null}
+                        className="flex justify-end items-center mt-3 space-x-3 lg:space-x-4 text-xs font-medium text-slate-400"
+                        activeClassName="sm:bg-blue-500 sm:text-white sm:hover:bg-blue-600"
+                        pageClassName="rounded-md w-6 h-6 flex justify-center items-center font-bold hover:bg-gray-200"
+                    />                  
+                </div>
+            }
             <div className="mt-6">
                 <table className="table-auto w-full text-sm w-full">
 
@@ -167,7 +221,7 @@ const Card = ({ switchOn, data, setData, tableHead, sustainMinColWidth }) => {
                     {/* Table Body */}
                     {switchOn &&
                         <tbody className="bg-white">
-                            {data && data.filter((item) => searchNestedObject(item, search)).map((item, i) => {
+                            {currentData && currentData.filter((item) => searchNestedObject(item, search)).map((item, i) => {
                                 return (
                                     <tr key={i} className="align-baseline hover:bg-gray-50">
                                         <th className="border-b font-medium px-4 py-3 text-slate-400">

@@ -94,7 +94,7 @@ const Sidebar = () => {
                 <div className="flex justify-center">
                     {listItems.map((item, index) => {
                         return (
-                            <ListItem key={index} className="max-w-fit mx-2" onClick={() => router.push(item.slug)}>
+                            <ListItem key={index} className={`max-w-fit mx-2 ${slug == item.text.toLowerCase() && "bg-gray-200"}`} onClick={() => router.push(item.slug)}>
                                 <img src={item.icon} alt={item.text} className="h-4 w-4" />
                             </ListItem>
                         )
